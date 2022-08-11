@@ -1,600 +1,398 @@
 <template>
-  <v-container
-    class="fill-height"
-    fluid
-    style="min-height: 434px"
+  <v-container>
+    <v-sheet
+    color="grey lighten-4"
+    :class="`pa-3 ${loader ? 'd-none' : 'd-block'}`"
+    loading
   >
-  
+    <v-skeleton-loader
+      class="mx-auto"
+      type="card"
+      loading
+    ></v-skeleton-loader>
+  </v-sheet>
     <v-row row wrap>
       <v-col cols="4" md="4" lg="2">
-        <v-list-item three-line>
-          <v-list-item-avatar
-            tile
-            size="80"
-          >
-            <v-img
-              src="https://www.brickmerge.de/img/sets/s/LEGO_76239_alt1.jpg"
-              aspect-ratio="2"
-              contain
-            />
-          </v-list-item-avatar>
-        </v-list-item>
+        <v-select
+          :items="getTheme"
+          label="Standard"
+          dense
+          outlined
+          @input="listFilterByTheme"
+        /> {{ themeFilterValue }}
       </v-col>
-      <v-col cols="8" md="6" lg="4">
-        <div class="caption grey--text">Super Heroes</div>
-        <div>Batmobile™ Tumbler: Duell mit Scarecrow™</div>
-          <v-chip-group
-            active-class="deep-purple accent-2 white--text"
-            column
-          >
-            <v-chip
-              color="blue"
-              label
-              outlined
-              small
-            >
-              Exklusiv
-            </v-chip>
-        </v-chip-group>
-      </v-col>
-       <v-col  cols="6" xs="6" lg="1">
-         <div class="caption grey--text">UVP</div>
-       <div>39,99 €</div>
-       </v-col>
-       <v-col  cols="6" xs="6" lg="1">
-         <div class="caption grey--text">Alter</div>
-       <div>8+</div>
-       </v-col>
-          <v-col xs="1">
-         <div class="caption grey--text">Erscheinungsjahr</div>
-       <div>10/2021</div>
-       </v-col>
-        <v-col xs="1">
-         <div class="caption grey--text">EOL</div>
-       <div>12/2022</div>
-       </v-col>
-        <v-col xs="2">
-         <div class="caption grey--text">EOL-Temperatur</div>
-       <div>ongoing</div>
-       </v-col>
     </v-row>
-    <v-row row wrap>
-      <v-col cols="4" md="4" lg="2">
-        <v-list-item three-line>
-          <v-list-item-avatar
-            tile
-            size="80"
-          >
-            <v-img
-              src="https://www.brickmerge.de/img/sets/s/LEGO_76239_alt1.jpg"
-              aspect-ratio="2"
-              contain
-            />
-          </v-list-item-avatar>
-        </v-list-item>
-      </v-col>
-      <v-col cols="8" md="6" lg="4">
-        <div class="caption grey--text">76239 Super Heroes</div>
-        <div>Batmobile™ Tumbler: Duell mit Scarecrow™</div>
-          <v-chip-group
-            active-class="deep-purple accent-2 white--text"
-            column
-          >
-            <v-chip
-              color="blue"
-              label
-              outlined
-              small
-            >
-              Exklusiv
-            </v-chip>
-        </v-chip-group>
-      </v-col>
-       <v-col cols="6" xs="6" lg="1">
-         <div class="caption grey--text">UVP</div>
-         <div>39,99 €</div>
-         <div class="caption grey--text">Markpreis</div>
-         <div>39,99 €</div>
-       </v-col>
-       <v-col  cols="6" xs="6" lg="1">
-         <div class="caption grey--text">Alter</div>
-       <div>8+</div>
-       </v-col>
-       <v-col cols="6" xs="6" lg="2">
-         <div class="caption grey--text">Erscheinungsjahr</div>
-         <div>10/2021</div>
-         <div class="caption grey--text">EOL</div>
-         <div>12/2022</div>
-       </v-col>
-       <v-col cols="6" xs="6" lg="2">
-         <div class="caption grey--text">EOL-Temperatur</div>
-         
-      <div class="gauge-block">
-         <div class="gauge-wrapper">
-        <div class="gauge four rischio3">
-          <div class="slice-colors">
-            <div class="st slice-item"></div>
-            <div class="st slice-item"></div>
-            <div class="st slice-item"></div>
-            <div class="st slice-item"></div>
-          </div>
-          <div class="needle"></div>
-          <div class="gauge-center">
-            <div class="label">Status</div>
-            <div class="number">HIGH</div>
-          </div>    
-        </div>  
-        </div>
-      </div>
-         <div>
-                Verfügbarkeit
-                <v-progress-linear
-                    background-color="success"
-                    buffer-value="75"
-                    color="warning"
-                    value="15"
-                />
-                </div>
-       </v-col>
-    </v-row>
-    <v-fade-transition mode="out-in">
-    <v-row>
-        
-      <v-col
-      v-for="set of sets" :key="set.setnumber"
-        cols="12"
-        xs="12"
-        md="6"
-        lg="4"
-      >
-        
-          <v-card
-            class="mx-auto"
-            max-width="460"
-            outlined
-          >
+    <v-card
+      v-for="product of getList" :key="product.setnumber"
+      outlined
+      flat
+    >
+      <v-card-text>
+        <v-row row wrap>
+          <v-col cols="4" md="4" lg="2">
             <v-list-item three-line>
-                <v-list-item-content>
-                  <div class="text-overline mb-4">
-                    {{set.theme}}
-                  </div>
-                  <v-list-item-title class="text-h5 mb-1">
-                    {{set.setnumber}}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{set.name}}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
-                    tile
-                    size="80"
-                >
-                <v-img
-                    :src="'https://www.brickmerge.de/img/sets/l/' + set.scr"
-                    aspect-ratio="2"
-                    contain
-                    ></v-img>
-                </v-list-item-avatar>
+              <v-list-item-avatar
+                tile
+                size="80"
+              >
+                <!-- <v-img
+                  :src="'https://www.brickmerge.de/img/sets/s/' + product.scr"
+                  aspect-ratio="2"
+                  contain
+                /> -->
+              </v-list-item-avatar>
             </v-list-item>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-text>
-            <v-row align="center">
-                <v-col
-                cols="8"
-                >
-                    <p class="my-1">UVP • 39,99 €</p>
-                    <p class="my-1">Alter • 8+</p>
-                    <p class="my-1">Erscheinungsjahr • 10/2021</p>
-                    <p class="my-1">EOL • 12/2022</p>
-                </v-col>
-                <v-col cols="4">
-                <div class="gauge-block">
-         <div class="gauge-wrapper">
-        <div class="gauge four rischio3">
-          <div class="slice-colors">
-            <div class="st slice-item"></div>
-            <div class="st slice-item"></div>
-            <div class="st slice-item"></div>
-            <div class="st slice-item"></div>
-          </div>
-          <div class="needle"></div>
-          <div class="gauge-center">
-            <div class="label">Status</div>
-            <div class="number">HIGH</div>
-          </div>    
-        </div>  
-        </div>
-      </div>
-                </v-col>
-            </v-row>
-            </v-card-text>
-            <v-card-text>
+          </v-col>
+          <v-col cols="8" md="6" lg="4">
+            <div class="caption grey--text">{{ product.setnumber }} {{ product.theme }}</div>
+            <div>{{ product.name }}</div>
               <v-chip-group
                 active-class="deep-purple accent-2 white--text"
                 column
               >
                 <v-chip
+                  v-if="product.exclusives == 'LEGO exclusive'"
                   color="blue"
                   label
                   outlined
-                  small
+                  x-small
                 >
                   Exklusiv
                 </v-chip>
-              </v-chip-group>
-            </v-card-text>
-            <v-card-text>
-                Text
-                <v-progress-linear
-                    background-color="success"
-                    buffer-value="75"
-                    color="warning"
-                    value="15"
-                />
-            </v-card-text>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-actions>
-                <v-btn
-                  color="deep-purple lighten-2"
-                  outlined
-                  text
-                >
-                  <v-icon left>
-                    mdi-cart
-                  </v-icon>
-                  Jetzt Kaufen
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                    icon
-                    @click="show = !show"
-                >
-                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-            </v-card-actions>
-            <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
-
-                <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                </v-card-text>
-            </div>
-            </v-expand-transition>
-        </v-card>
-      </v-col>  
-      <v-col
-        cols="12"
-        xs="12"
-        md="6"
-        lg="4"
-      >
-        
-          <v-card
-            class="mx-auto"
-            max-width="460"
-            outlined
-          >
-            <v-list-item three-line>
-                <v-list-item-content>
-                  <div class="text-overline mb-4">
-                    Super Heroes
-                  </div>
-                  <v-list-item-title class="text-h5 mb-1">
-                    76239
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    Batmobile™ Tumbler: Duell mit Scarecrow™
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
-                    tile
-                    size="80"
-                >
-                <v-img
-                    src="https://www.brickmerge.de/img/sets/s/LEGO_76239_alt1.jpg"
-                    aspect-ratio="2"
-                    contain
-                    ></v-img>
-                </v-list-item-avatar>
-            </v-list-item>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-text>
-            <v-row align="center">
-                <v-col
-                cols="8"
-                >
-                    <p class="my-1">UVP • 39,99 €</p>
-                    <p class="my-1">Alter • 8+</p>
-                    <p class="my-1">Erscheinungsjahr • 10/2021</p>
-                    <p class="my-1">EOL • 12/2022</p>
-                </v-col>
-                <v-col cols="4">
-                <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sun.png"
-                    alt="Sunny image"
-                    width="92"
-                ></v-img>
-                </v-col>
-            </v-row>
-            </v-card-text>
-            <v-card-text>
-              <v-chip-group
-                active-class="deep-purple accent-2 white--text"
-                column
-              >
                 <v-chip
-                  color="blue"
+                  v-if="product.exclusives == 'Retail - limited'"
+                  color="indigo"
                   label
                   outlined
-                  small
+                  x-small
                 >
-                  Exklusiv
+                  Seltene Sets
                 </v-chip>
-              </v-chip-group>
-            </v-card-text>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-actions>
-                <v-btn
-                  color="deep-purple lighten-2"
-                  text
+                <v-chip
+                  color="orange"
+                  label
+                  outlined
+                  x-small
                 >
-                  Kufen
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                    icon
-                    @click="show = !show"
+                  Exklusiven Minifiguren
+                </v-chip>
+            </v-chip-group>
+            <v-row no-gutters>
+              <v-col
+                cols="12"
+                md="12"
+              >
+                <div class="caption grey--text">Verfügbarkeit</div>
+                <v-progress-linear
+                  background-color="success"
+                  buffer-value="75"
+                  color="warning"
+                  value="15"
+                />
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="6" xs="6" lg="1">
+            <div class="caption grey--text">UVP</div>
+            <div>{{ product.retailpricebrutto }} €</div>
+            <div class="caption grey--text">Markpreis</div>
+            <div>{{ product.averageprice }} €</div>
+          </v-col>
+          <v-col  cols="6" xs="6" lg="1">
+            <div class="caption grey--text">Alter</div>
+          <div>{{ product.age }}</div>
+          </v-col>
+          <v-col cols="6" xs="6" lg="2">
+            <div class="caption grey--text">Erscheinungsjahr</div>
+            <div>{{ product.year }}</div>
+            <div class="caption grey--text">EOL</div>
+            <div>{{ product.eol }}</div>
+          </v-col>
+          <v-col cols="6" xs="6" lg="2" style="height: 135px;">
+            <div class="caption grey--text">EOL-Temperatur {{ product.gauge }}</div>
+            <div class="gauge-block">
+              <div class="gauge-wrapper">
+                <div
+                  :class="`gauge six rischio${product.gauge}`"
                 >
-                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-            </v-card-actions>
-            <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
-
-                <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                </v-card-text>
+                  <div class="slice-colors">
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                    <div class="st slice-item"></div>
+                  </div>
+                  <div class="needle"></div>
+                  <div class="gauge-center">
+                    <div class="label">Status</div>
+                    <div class="number">{{ status[product.gauge - 1] }}</div>
+                  </div>    
+                </div>  
+              </div>
             </div>
-            </v-expand-transition>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        xs="12"
-        md="6"
-        lg="4"
-      >
-        
-          <v-card
-            class="mx-auto"
-            max-width="460"
-            outlined
-          >
-            <v-list-item three-line>
-                <v-list-item-content>
-                  <div class="text-overline mb-4">
-                    Super Heroes {{users}}
-                    <v-btn
-                        @:click="add"
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          color="secondary"
+          small
+          text
+        >
+          Jetzt Kaufen
+        </v-btn>
+        <v-btn
+          :key="product.setnumber"
+          icon
+          @click="show = !show"
+        >
+          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        </v-btn>
+      </v-card-actions>
+      <v-expand-transition>
+        <div v-show="show">
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-row row wrap>
+              <v-col cols="4">
+                <v-card
+                  flat
+                  tile
+                >
+                <v-window
+                  v-model="onboarding"
+                  reverse
+                >
+                  <v-window-item
+                    v-for="n in length"
+                    :key="`card-${n}`"
+                  >
+                    <v-card
+                      color="grey"
+                      height="200"
+                    >
+                      <v-row
+                        class="fill-height"
+                        align="center"
+                        justify="center"
+                      >
+                        <h1
+                          style="font-size: 5rem;"
+                          class="white--text"
                         >
-                        Kufen
-                    </v-btn>
-                  </div>
-                  <v-list-item-title class="text-h5 mb-1">
-                    76239
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    Batmobile™ Tumbler: Duell mit Scarecrow™
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
-                    tile
-                    size="80"
+                          Slide {{ n }}
+                        </h1>
+                      </v-row>
+                    </v-card>
+                  </v-window-item>
+                </v-window>
+                <v-card-actions class="justify-space-between">
+                  <v-btn
+                    text
+                    @click="prev"
+                  >
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                <v-item-group
+                  v-model="onboarding"
+                  class="text-center"
+                  mandatory
                 >
-                <v-img
-                    src="https://www.brickmerge.de/img/sets/s/LEGO_76239_alt1.jpg"
-                    aspect-ratio="2"
-                    contain
-                    ></v-img>
-                </v-list-item-avatar>
-            </v-list-item>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-text>
-            <v-row align="center">
-                <v-col
-                cols="8"
-                >
-                    <p class="my-1">UVP • 39,99 €</p>
-                    <p class="my-1">Alter • 8+</p>
-                    <p class="my-1">Erscheinungsjahr • 10/2021</p>
-                    <p class="my-1">EOL • 12/2022</p>
-                </v-col>
-                <v-col cols="4">
-                <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sun.png"
-                    alt="Sunny image"
-                    width="92"
-                ></v-img>
-                </v-col>
-            </v-row>
-            </v-card-text>
-            <v-card-text>
-              <v-chip-group
-                active-class="deep-purple accent-2 white--text"
-                column
+              <v-item
+                v-for="n in length"
+                :key="`btn-${n}`"
+                v-slot="{ active, toggle }"
               >
-                <v-chip
-                  color="blue"
-                  label
-                  outlined
-                  small
-                >
-                  Exklusiv
-                </v-chip>
-              </v-chip-group>
-            </v-card-text>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-actions>
                 <v-btn
-                  color="deep-purple lighten-2"
-                  text
-                  @:click="$store.commit('counter/increment')"
-                >
-                  Kufen
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
+                  :input-value="active"
                   icon
-                  @click="show = !show"
+                  @click="toggle"
                 >
-                  <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                  <v-icon>mdi-record</v-icon>
                 </v-btn>
-            </v-card-actions>
-            <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
-
-                <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                </v-card-text>
-            </div>
-            </v-expand-transition>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        xs="12"
-        md="6"
-        lg="4"
-      >
-        
-          <v-card
-            class="mx-auto"
-            max-width="460"
-            outlined
-          >
-            <v-list-item three-line>
-                <v-list-item-content>
-                  <div class="text-overline mb-4">
-                    Super Heroes
-                  </div>
-                  <v-list-item-title class="text-h5 mb-1">
-                    76239
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    Batmobile™ Tumbler: Duell mit Scarecrow™
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-
-                <v-list-item-avatar
+              </v-item>
+            </v-item-group>
+            <v-btn
+              text
+              @click="next"
+            >
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </v-card-actions>
+                </v-card>
+              </v-col>
+              <v-col cols="8">
+                <v-card
+                  class="mx-auto"
+                  tile
+                >
+                  <v-list-item>
+                    <v-list-item-avatar
+                      height="35"
+                      tile
+                      rounded="false"
+                      width="105"
+                    >
+                      <!-- <v-img
+                        src="https://avyqdkbazq.cloudimg.io/v7/_brickfact-images/shop-icons/amazon_de_color.png?w=300">
+                      </v-img> -->
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>305,99 EUR</v-list-item-title>
+                      <v-list-item-subtitle>Spare 79%!</v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                            <v-btn
+                              elevation="3"
+                              color="primary lighten-2"
+                              outlined
+                              text
+                              small
+                            >
+                              <v-icon left>
+                                mdi-cart
+                              </v-icon>
+                              Zum Shop
+                            </v-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                  <v-list-item>
+                  <v-list-item-avatar
+                    height="35"
                     tile
-                    size="80"
-                >
-                <v-img
-                    src="https://www.brickmerge.de/img/sets/s/LEGO_76239_alt1.jpg"
-                    aspect-ratio="2"
-                    contain
-                    ></v-img>
-                </v-list-item-avatar>
-            </v-list-item>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-text>
-            <v-row align="center">
-                <v-col
-                cols="8"
-                >
-                    <p class="my-1">UVP • 39,99 €</p>
-                    <p class="my-1">Alter • 8+</p>
-                    <p class="my-1">Erscheinungsjahr • 10/2021</p>
-                    <p class="my-1">EOL • 12/2022</p>
-                </v-col>
-                <v-col cols="4">
-                <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sun.png"
-                    alt="Sunny image"
-                    width="92"
-                ></v-img>
-                </v-col>
+                    rounded="false"
+                    width="105"
+                  >
+                    <!-- <v-img
+                      src="https://avyqdkbazq.cloudimg.io/v7/_brickfact-images/shop-icons/alternate_de_color.png?w=300">
+                    </v-img> -->
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>305,99 EUR</v-list-item-title>
+                    <v-list-item-subtitle>
+                      <v-progress-linear
+                        buffer-value="75"
+                        color="amber"
+                        height="20"
+                        value="15"
+                      >
+                        <strong>35 %</strong>
+                      </v-progress-linear>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                      <v-btn
+                            elevation="3"
+                            color="primary lighten-2"
+                            outlined
+                            text
+                            small
+                          >
+                            <v-icon left>
+                              mdi-cart
+                            </v-icon>
+                            Zum Shop
+                          </v-btn>
+                  </v-list-item-action>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                </v-card>
+              </v-col>
             </v-row>
-            </v-card-text>
-            <v-card-text>
-              <v-chip-group
-                active-class="deep-purple accent-2 white--text"
-                column
-              >
-                <v-chip
-                  color="blue"
-                  label
-                  outlined
-                  small
-                >
-                  Exklusiv
-                </v-chip>
-              </v-chip-group>
-            </v-card-text>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-actions>
-                <v-btn
-                  color="deep-purple lighten-2"
-                  text
-                >
-                  Kufen
-                </v-btn>
-                <v-spacer></v-spacer>
-                <v-btn
-                    icon
-                    @click="show = !show"
-                >
-                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-                </v-btn>
-            </v-card-actions>
-            <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
+          </v-card-text>
+        </div>
+      </v-expand-transition>
+    </v-card>
 
-                <v-card-text>
-                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                </v-card-text>
-            </div>
-            </v-expand-transition>
-        </v-card>
+    <v-row row wrap>
+      <v-col cols="4" md="4" lg="2">
+        <v-btn
+          depressed
+          color="primary"
+          :loading="getLoading"
+          @click="fetchProducts"
+        >
+          Primary
+        </v-btn>
+      </v-col>
+      <v-col cols="4" md="4" lg="2">
+        <v-btn
+          depressed
+          color="primary"
+          :loading="getLoading"
+          @click="addToList"
+        >
+          {{ getList.length }}
+        </v-btn>
       </v-col>
     </v-row>
-      
-    </v-fade-transition>
   </v-container>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from "vuex"
   export default {
     data: () => ({
+      loader: true,
+      power: 78,
+      length: 3,
+      onboarding: 0,
       show: false,
-      sets: []
+      status: ['Frischling', 'Entspannt', 'In Kürze', 'Zielgerade', 'Frührente', 'EOL'],
+      themeFilterValue: null, 
     }),
-    async mounted() {
-        this.sets = await this.$axios.$get('https://script.google.com/macros/s/AKfycbz6okDH1siCTnAVTveZf16Qh10S9XDiM9zwu5pD_lg1gUdS90Geyc6CHm0Bznn6NCTl/exec?listing=eol')
+    computed: {
+      // 
+      // async fetchProducts({store}){
+      //   if (store.getters.products.length > 0) {
+      //     await store.dispatch('products/fetchProducts')
+      //   }
+      // },
+      ...mapGetters({
+        getProducts: 'products/getProducts',
+        getList: 'products/getList',
+        getTheme: 'products/getTheme',
+        getLoading: 'products/getLoading',
+      }),
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.$nuxt.$loading.start()
+        setTimeout(() => this.$nuxt.$loading.finish(), 500)
+      })
     },
     methods: {
-        add () {
-            this.$store.commit('counter/increment')
-        },
-    }
+      ...mapActions({
+        fetchProducts: 'products/fetchProducts',
+        addToList: 'products/addToList',
+        listFilterByTheme: 'products/listFilterByTheme',
+      }),
+      next () {
+        this.onboarding = this.onboarding + 1 === this.length
+          ? 0
+          : this.onboarding + 1
+      },
+      prev () {
+        this.onboarding = this.onboarding - 1 < 0
+          ? this.length - 1
+          : this.onboarding - 1
+      },
+    },
   }
 </script>
 
 <style>
 .gauge-block {
+  height: 120px;
   transform: scale(0.5);
   width: auto;
   margin: 0 auto;
   display: inline-block;
   position: relative;
-  left: -70px;
+  left: -62px;
+  top: -10px;
 }
 
 .gauge-wrapper {
@@ -666,6 +464,52 @@
   border: 50px solid transparent;  
 }
 
+/* GAUGE SIX LEVELS */
+.six.rischio1 .needle {animation: sixspeed1 2s 1 both; animation-delay: 1s; display:block;}
+.six.rischio2 .needle {animation: sixspeed2 2s 1 both; animation-delay: 1s; display:block;}
+.six.rischio3 .needle {animation: sixspeed3 2s 1 both; animation-delay: 1s; display:block;}
+.six.rischio4 .needle {animation: sixspeed4 2s 1 both; animation-delay: 1s; display:block;}
+.six.rischio5 .needle {animation: sixspeed5 2s 1 both; animation-delay: 1s; display:block;}
+.six.rischio6 .needle {animation: sixspeed6 2s 1 both; animation-delay: 1s; display:block;}
+
+.six .slice-colors .st.slice-item:nth-child(1) {  
+  border-left: 86px transparent solid;    
+  border-right: 86px transparent solid;
+  border-top: 50px  transparent solid;
+  border-bottom: 50px #1eaa59 solid;
+	margin-left:-75px;
+  z-index: 6;
+}
+
+.six .slice-colors .st.slice-item:nth-child(2) {
+  border-left: 80px transparent solid;    
+  border-right: 80px transparent solid;
+  border-top: 130px  transparent solid;
+  border-bottom: 130px #f1c40f solid;
+	margin-left:-60px;
+  z-index: 5;
+  background-color: #f1af0f;
+}
+
+.six .slice-colors .st.slice-item:nth-child(4) {
+  border-left: 80px transparent solid;    
+  border-right: 80px transparent solid;
+  border-top: 130px  transparent solid;
+  border-bottom: 130px #f1470f solid;
+	margin-left:100px;
+  z-index: 5;
+  background-color: #f15e0f;
+}
+
+.six .slice-colors .st.slice-item:nth-child(6) {  
+  border-left: 86px transparent solid;    
+  border-right: 86px transparent solid;
+  border-top: 50px  transparent solid;
+  border-bottom: 50px #F00 solid;
+	margin-left:100px;
+  z-index: 6;
+}
+
 
 .four .slice-colors .st.slice-item:nth-child(2) {
   border-top: 50px #f1c40f solid;
@@ -680,6 +524,36 @@
   background-color:#e67e22;
 }
 
+
+@-webkit-keyframes sixspeed1 {
+	0% {transform: rotate(0);}
+  100% {transform: rotate(13deg);}
+}
+
+@-webkit-keyframes sixspeed2 {
+	0% {transform: rotate(0);}
+  100% {transform: rotate(43deg);}
+}
+
+@-webkit-keyframes sixspeed3 {
+	0% {transform: rotate(0);}
+  100% {transform: rotate(74deg);}
+}
+
+@-webkit-keyframes sixspeed4 {
+	0% {transform: rotate(0);}
+  100% {transform: rotate(107deg);}
+}
+
+@-webkit-keyframes sixspeed5 {
+	0% {transform: rotate(0);}
+  100% {transform: rotate(137deg);}
+}
+
+@-webkit-keyframes sixspeed6 {
+	0% {transform: rotate(0);}
+  100% {transform: rotate(167deg);}
+}
 
 @-webkit-keyframes fourspeed1 {
 	0% {transform: rotate(0);}

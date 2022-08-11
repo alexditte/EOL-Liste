@@ -13,6 +13,10 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
+  loading: {
+    color: 'blue',
+    height: '5px'
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
@@ -41,7 +45,7 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'en',
+      lang: 'de',
     },
   },
 
