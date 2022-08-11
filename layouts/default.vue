@@ -86,6 +86,11 @@ export default {
           title: 'EOL-Liste',
           to: '/eol-liste',
         },
+        {
+          icon: 'mdi-apps',
+          title: 'Posts',
+          to: '/page',
+        },
       ],
       miniVariant: false,
       right: true,
