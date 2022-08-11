@@ -379,6 +379,22 @@
           ? this.length - 1
           : this.onboarding - 1
       },
+      infiniteScrolling(entries, observer, isIntersecting) {
+        setTimeout(() => {
+          this.page++;
+          axios
+            .get(this.url)
+            .then(response => {
+              if (response.data.length > 1) {
+                response.data.forEach(item => this.titles.push(item));
+              } else {
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }, 500);
+      },
     },
   }
 </script>
